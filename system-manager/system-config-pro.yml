@@ -1,0 +1,77 @@
+server:
+   port: 8085
+spring:
+  application:
+    name: system-manager
+  jackson:
+    default-property-inclusion: non_empty
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    multipart:
+      max-file-size: 50Mb
+      max-request-size: 50Mb
+  mvc:
+    view:
+      prefix: /jsp/
+      suffix: .jsp
+      
+  redis:
+    host: 192.168.10.226
+    port: 6379
+#    database: 2 # 设置数据库索引为0 默认为0
+    password: 123456qQ # 密码为空
+    jedis:
+      pool:
+        max-active: 1000 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 10000 # 连接池最大阻塞等待时间（使用负值表示没有限制）这里设置为10s
+        max-idle: 10 # 连接池中的最大空闲连接
+        min-idle: 2 # 连接池中的最小空闲连接
+    timeout: 5000 # 连接超时时间（毫秒）
+
+  datasource:
+    name: channel_system
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.10.226:10010/channel_system?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: etoc@123
+    initialize: true
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 10
+    minIdle: 5
+    maxActive: 100
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 10
+    filters: stat,wall,slf4j
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+mybatis:
+  mapper-locations: classpath*:mappers/*Mapper.xml
+  type-aliases-package: channel.system.manager.dao.model
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+
+weixin:
+  corpId: wx433314ac6eedbd31
+  agentSecret: XoRn0MQ-Qj7W7bT8DK_ij3dY-pc0O77YopNYy4NEsePT7iTP8NcqjYz7PuT8ob8X
+  agentId: 3
+  redirectUri: http://test.etoc.cn/system-service/wx/wxInfo
+
+react:
+  transferUrl: 'http://test.etoc.cn/#/transfer'
+
